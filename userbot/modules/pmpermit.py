@@ -21,7 +21,6 @@ from userbot.utils import edit_delete, edit_or_reply
 
 DEF_UNAPPROVED_MSG = (
     f"Join sini dulu sayang @Cari_Teman_Pacar_Jodoh_Online, kalo udah join nanti baru aku chat lagi,bantu ramein yah ka")
-)
 
 
 @bot.on(events.NewMessage(incoming=True))
