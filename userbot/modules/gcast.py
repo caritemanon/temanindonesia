@@ -48,24 +48,24 @@ async def gcast(event):
     elif event.is_reply:
         msg = await event.get_reply_message()
     else:
-        await edit_delete(event, "**Berikan Sebuah Pesan atau Reply**")
-        return
+        return await edit_delete(event, "**Berikan Sebuah Pesan atau Reply**")
     kk = await edit_or_reply(event, "`Globally Broadcasting Msg...`")
     er = 0
     done = 0
     async for x in event.client.iter_dialogs():
         if x.is_group:
             chat = x.id
-            try:
-                if chat not in GCAST_BLACKLIST:
+            if chat not in GCAST_BLACKLIST:
+                try:
+                    await event.client.send_message(chat, msg)
+                    await asyncio.sleep(0.1)
+                    done += 1
+                except FloodWaitError as anj:
+                    await asyncio.sleep(int(anj.seconds))
                     await event.client.send_message(chat, msg)
                     done += 1
-            except FloodWaitError as e:
-                await asyncio.sleep(e.x)
-                await event.client.send_message(chat, msg)
-                done += 1
-            except BaseException:
-                er += 1
+                except BaseException:
+                    er += 1
     await kk.edit(
         f"**Berhasil Mengirim Pesan Ke** `{done}` **Grup, Gagal Mengirim Pesan Ke** `{er}` **Grup**"
     )
